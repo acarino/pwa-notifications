@@ -6,6 +6,14 @@
 /tmp
 /out-tsc
 
+# private files
+
+.firebaserc
+postbuild.bash
+src/.firebaserc
+src/app/push.service.ts
+src/environments/firebase.config.ts
+
 # dependencies
 /node_modules
 
