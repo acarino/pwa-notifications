@@ -34,23 +34,9 @@ self.addEventListener('activate', function(e) {
       }));
     })
   );
-
-  /*
-   * Fixes a corner case in which the app wasn't returning the latest data.
-   * You can reproduce the corner case by commenting out the line below and
-   * then doing the following steps: 1) load app for first time so that the
-   * initial New York City data is shown 2) press the refresh button on the
-   * app 3) go offline 4) reload the app. You expect to see the newer NYC
-   * data, but you actually see the initial data. This happens because the
-   * service worker is not yet activated. The code below essentially lets
-   * you activate the service worker faster.
-   */
   return self.clients.claim();
 });
 
-self.addEventListener('message', function(messageEvent) {
-  console.log('Handling message event in sw:', messageEvent);
-});
 
 // Initialize Firebase App
  self.addEventListener("notificationclick", function(event) {
@@ -105,19 +91,16 @@ self.addEventListener('notificationclose', function(e) {
   console.log('Closed notification: ' + primaryKey);
 });
 
-// Handle Background Notifications
-
 
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
-  var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
+  var dataUrl = 'https://pwa-notification-poc-ac.firebaseapp.com/';
   if (e.request.url.indexOf(dataUrl) > -1) {
     /*
      * When the request URL contains dataUrl, the app is asking for fresh
      * weather data. In this case, the service worker always goes to the
      * network and then caches the response. This is called the "Cache then
      * network" strategy:
-     * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
      */
     e.respondWith(
       caches.open(dataCacheName).then(function(cache) {
@@ -129,9 +112,7 @@ self.addEventListener('fetch', function(e) {
     );
   } else {
     /*
-     * The app is asking for app shell files. In this scenario the app uses the
-     * "Cache, falling back to the network" offline strategy:
-     * https://jakearchibald.com/2014/offline-cookbook/#cache-falling-back-to-network
+     *  falling back to the network offline strategy:
      */
     e.respondWith(
       caches.match(e.request).then(function(response) {
@@ -226,9 +207,15 @@ Z.prototype.useServiceWorker=function(a){if(!(a instanceof ServiceWorkerRegistra
 Z.prototype.f=function(){var a=this;if(this.b)return Promise.resolve(this.b);this.b=null;return navigator.serviceWorker.register("/firebase-messaging-sw.js",{scope:"/firebase-cloud-messaging-push-scope"}).then(function(b){a.b=b;b.update();return b}).catch(function(b){throw a.a.create(B.D,{browserErrorMessage:b.message});})};
 var ka=function(a){"serviceWorker"in navigator&&navigator.serviceWorker.addEventListener("message",function(b){if(b.data&&b.data[F.u])switch(b=b.data,b[F.u]){case G.P:case G.K:a.g.next(b[F.B])}},!1)};if(!(firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService))throw Error("Cannot install Firebase Messaging - be sure to load firebase-app.js first.");firebase.INTERNAL.registerService("messaging",function(a){return self&&"ServiceWorkerGlobalScope"in self?new X(a):new Z(a)},{Messaging:Z});})();
 
+// Handle Background Notifications
+
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
 firebase.initializeApp({
   'messagingSenderId': '790411914550'
+});
+
+self.addEventListener('message', function(messageEvent) {
+  console.log('Handling message event in sw:', messageEvent);
 });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.

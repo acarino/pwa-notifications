@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   itemsDisplay: FirebaseListObservable<any[]> // List observable for template view (Optional. items itself can be used)
   itemsArr: any[] // Stores the token IDs retrieved from the firebase database 
   hideToken: boolean = false
-  private worker: ServiceWorker
   myNotificationTitle: any
   myNotificationBody: any
 
@@ -35,14 +34,14 @@ export class AppComponent implements OnInit {
 
 
 
-  constructor(public db: AngularFireDatabase, private pushService: PushService) {
+  constructor(public db: AngularFireDatabase, private pushService: PushService ) {
 
 
   navigator.serviceWorker.addEventListener('message', function(event) {
-        console.log("event type: "+event.data.type);
-
-        console.log("location of call: "+self.location);
-        console.log(self);
+        console.log("event : ", event);
+        console.log("data : ", event.data);
+        console.log("this: ", this);
+        console.log("self: ", self);
 
         //this.lmyNotificationTitle = event.data.title;
        // this.lmyNotificationBody = event.data.body;
@@ -113,6 +112,8 @@ export class AppComponent implements OnInit {
   getDataFromFb() {
     this.hideToken = true
   }
+
+
 
 
   ngOnInit() {
