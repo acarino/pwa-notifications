@@ -1,5 +1,5 @@
 {
-     "name": "PWA-Push-Firebase-App",
+     "name": "PWA Push Firebase App",
      "short_name": "PWA Push",
      "gcm_sender_id": "103953800507",
      "icons": [{
@@ -22,8 +22,12 @@
       "src": "assets/images/icons/icon-256x256.png",
       "sizes": "256x256",
       "type": "image/png"
+    }, {
+      "src": "assets/images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }],
-  "start_url": "/index.html",
+  "start_url": "/index.html?launcher=true",
   "display": "standalone",
   "background_color": "#3E4EB8",
   "theme_color": "#2F3BA2"

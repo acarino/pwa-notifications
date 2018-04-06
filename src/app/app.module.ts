@@ -1,3 +1,5 @@
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +20,7 @@ firebase.initializeApp(firebaseConfig);
   ],
   imports: [
     BrowserModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: true}),
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),

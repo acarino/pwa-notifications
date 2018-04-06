@@ -13,6 +13,9 @@ postbuild.bash
 src/.firebaserc
 src/app/push.service.ts
 src/environments/firebase.config.ts
+push_keys.rtf
+package-lock.json
+yarn.lock
 
 # dependencies
 /node_modules

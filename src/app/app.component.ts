@@ -22,6 +22,9 @@ export class AppComponent implements OnInit {
   hideToken: boolean = false
   myNotificationTitle: any
   myNotificationBody: any
+  viewHeight: any;
+  viewWidth: any;
+
 
   // Notificayion object
   pushData: any = {
@@ -36,19 +39,8 @@ export class AppComponent implements OnInit {
 
   constructor(public db: AngularFireDatabase, private pushService: PushService ) {
 
-let channel = new MessageChannel();
-
-channel.port2.addEventListener('message', function(event) {
-        console.log("port event : ", event);
-        console.log("port data : ", event.data);
-        console.log("port this: ", this);
-        console.log("port self: ", self);
-
-        //this.lmyNotificationTitle = event.data.title;
-       // this.lmyNotificationBody = event.data.body;
-
-     });
-
+    this.viewHeight = (window.screen.height) + "px";
+    this.viewWidth = (window.screen.width) + "px";
 
 
   navigator.serviceWorker.addEventListener('message', function(event) {
@@ -105,6 +97,12 @@ channel.port2.addEventListener('message', function(event) {
     console.log("Counter value", counter)
     return counter
   }
+//test function to verify window level post message   
+generatePost(){
+
+    window.postMessage("hi!", "*");
+
+}
 
   // Generate Push through an event
   generatePush() {

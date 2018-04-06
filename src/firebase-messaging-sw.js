@@ -1,6 +1,9 @@
 
 //service worker for pwa app
 
+importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
+
 var dataCacheName = 'pwaNotificationData-v1';
 var cacheName = 'waNotificationCache';
 var filesToCache = [
@@ -24,7 +27,7 @@ self.addEventListener('activate', function(e) {
   e.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
-  		
+
   		console.log('[ServiceWorker] addEventListener Activate');
 
         if (key !== cacheName && key !== dataCacheName) {
@@ -34,19 +37,20 @@ self.addEventListener('activate', function(e) {
       }));
     })
   );
+
   return self.clients.claim();
 });
 
 // Initialize Firebase App
  self.addEventListener("notificationclick", function(event) {
-    console.log('On notification click1: ', event.notification); 
+    console.log('On notification click1: ', event.notification);
 
     var mymessage = {
 
     	type: "notification",
     	msg: "received notification from service worker post",
     	title: event.notification.title,
-    	body: event.notification.body	
+    	body: event.notification.body
 
     }
 
@@ -58,7 +62,7 @@ self.addEventListener('activate', function(e) {
         clients.matchAll({includeUncontrolled: true, type: 'window'})
         .then(function(clientList) {
 
-        	console.log('client list length: '+ clientList.length); 
+        	console.log('client list length: '+ clientList.length);
 
             for (var i = 0; i < clientList.length; i++) {
                 var client = clientList[i];
@@ -119,9 +123,6 @@ self.addEventListener('fetch', function(e) {
   }
 });
 
-importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
-
 // Handle Background Notifications
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
@@ -129,9 +130,18 @@ firebase.initializeApp({
   'messagingSenderId': '790411914550'
 });
 
-self.addEventListener('message', function(messageEvent) {
-  console.log('Handling message event in sw:', messageEvent);
-});
+function setListener(){
+   clients.matchAll({includeUncontrolled: true, type: 'window'})
+  .then(function(clientList) {
+    for (var i = 0; i < clientList.length; i++) {
+      var client = clientList[i];
+      console.log("in setListener client length: "+clientList.length);
+      client.addEventListener('message', function(messageEvent) {
+      console.log('in setListener got event in sw:', messageEvent);
+      });
+    }
+  })
+}
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
 var messaging = firebase.messaging();
