@@ -36,6 +36,20 @@ export class AppComponent implements OnInit {
 
   constructor(public db: AngularFireDatabase, private pushService: PushService ) {
 
+let channel = new MessageChannel();
+
+channel.port2.addEventListener('message', function(event) {
+        console.log("port event : ", event);
+        console.log("port data : ", event.data);
+        console.log("port this: ", this);
+        console.log("port self: ", self);
+
+        //this.lmyNotificationTitle = event.data.title;
+       // this.lmyNotificationBody = event.data.body;
+
+     });
+
+
 
   navigator.serviceWorker.addEventListener('message', function(event) {
         console.log("event : ", event);

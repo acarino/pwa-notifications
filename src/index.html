@@ -14,8 +14,34 @@
   <link rel="apple-touch-icon" href="icon-152x152.png">
   <meta name="msapplication-TileImage" content="icon-144x144.png">
   <meta name="msapplication-TileColor" content="#2F3BA2">
+ <script type="text/javascript">
+  function postIt(){
+
+    var channel = new MessageChannel();
+
+    window.postMessage("hi!", "*", [channel.port2]);
+
+  }
+ </script>
 </head>
-<body>hi there
+<body>
+
+<input type=button value="click me" onclick="postIt();" />
+
   <app-root></app-root>
+
+  <script type="text/javascript">
+  window.addEventListener('message', function(event) {
+        console.log("wwwww event : ", event);
+        console.log("wwww data : ", event.data);
+        console.log("wwww this: ", this);
+        console.log("wwww self: ", self);
+
+        //this.lmyNotificationTitle = event.data.title;
+       // this.lmyNotificationBody = event.data.body;
+
+     });
+
+  </script> 
 </body>
 </html>
